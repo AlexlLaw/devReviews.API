@@ -1,7 +1,35 @@
+using Microsoft.AspNetCore.Mvc;
+using devReviews.API.Models;
+
 namespace devReviews.API.Controllers
 {
-    public class ProductsController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController : ControllerBase
     {
-        
+        [HttpGet]
+        public IActionResult GetAll() {
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id) {
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Post(AddProductInputModel model) {
+            return CreatedAtAction (nameof(GetById), new { id = 1}, model);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, UpdateProductInputModel model) {
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id) {
+            return Ok();
+        }
     }
 }
