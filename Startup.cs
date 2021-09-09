@@ -27,6 +27,7 @@ namespace devReviews.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSingleton<DevReviewsDbContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

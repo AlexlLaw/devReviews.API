@@ -7,6 +7,14 @@ namespace devReviews.API.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
+        
+        public DevReviewDbContext _DbContext { get; }
+
+        public ProductsController(DevReviewDbContext dbContext)
+        {
+          _DbContext = dbContext;   
+        }
+
         [HttpGet]
         public IActionResult GetAll() {
             return Ok();
