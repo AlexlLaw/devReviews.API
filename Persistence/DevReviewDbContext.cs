@@ -1,15 +1,24 @@
 using System.Collections.Generic;
 using devReviews.API.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace devReviews.API.Persistence
 {
-    public class DevReviewDbContext
+    public class DevReviewDbContext : DbContext
     {
-        public DevReviewDbContext() 
+        public DevReviewDbContext(DbContextOptions<DevReviewDbContext> options) : base(options) 
         {
             Products = new List<Product>();
         }
 
-        public List<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public Dbset<ProductReview> ProductReview { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        {
+
+        }
+
+
     }
 }

@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using devReviews.API.Persistence;
+using devReviews.API.Profiles;
+
 
 namespace devReviews.API
 {
@@ -27,7 +30,8 @@ namespace devReviews.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSingleton<DevReviewsDbContext>();
+            services.AddAutoMapper(typeof(ProductProfiles));
+            services.AddSingleton<DevReviewDbContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

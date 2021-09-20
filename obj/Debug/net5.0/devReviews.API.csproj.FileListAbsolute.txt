@@ -27,3 +27,5 @@ C:\Users\junio\Music\c#\devReviews.API\obj\Debug\net5.0\devReviews.API.dll
 C:\Users\junio\Music\c#\devReviews.API\obj\Debug\net5.0\ref\devReviews.API.dll
 C:\Users\junio\Music\c#\devReviews.API\obj\Debug\net5.0\devReviews.API.pdb
 C:\Users\junio\Music\c#\devReviews.API\obj\Debug\net5.0\devReviews.API.genruntimeconfig.cache
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

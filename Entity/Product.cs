@@ -5,9 +5,8 @@ namespace devReviews.API.Entity
 {
     public class Product
     {
-        public Product(int id, string title, string description, decimal price, DateTime registerAt) 
+        public Product(string title, string description, decimal price) 
         {
-            this.Id = id;
             this.Title = title;
             this.Description = description;
             this.Price = price;
@@ -24,6 +23,12 @@ namespace devReviews.API.Entity
 
         public void AddReview(ProductReview review) {
             Reviews.Add(review);
+        }
+
+        public void UpdateReview(string description, decimal price)
+        {
+            Description = description;
+            Price = price;
         }
     }
 }
