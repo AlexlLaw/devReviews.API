@@ -1,8 +1,9 @@
+using System;
 namespace devReviews.API.Models
 {
     public class UpdateProductInputModel
     {
         public string Description { get; set; }
-        public string Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
