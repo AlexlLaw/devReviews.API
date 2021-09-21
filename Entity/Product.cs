@@ -7,11 +7,11 @@ namespace devReviews.API.Entity
     {
         public Product(string title, string description, decimal price) 
         {
-            this.Title = title;
-            this.Description = description;
-            this.Price = price;
-            this.RegisterAt = DateTime.Now;
-            this.Reviews = new List<ProductReview>();
+           this.Title = title;
+           this.Description = description;
+           this.Price = price;
+           this.RegisterAt = DateTime.Now;
+           this.Reviews = new List<ProductReview>();
         }
         
         public int Id { get; private set; }

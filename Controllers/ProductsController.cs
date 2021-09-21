@@ -1,11 +1,12 @@
-using System.Reflection.Emit;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using devReviews.API.Models;
 using devReviews.API.Models.Views;
 using devReviews.API.Persistence;
 using devReviews.API.Entity;
 using System.Linq;
+using System.Collections.Generic;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace devReviews.API.Controllers
 {
@@ -15,41 +16,33 @@ namespace devReviews.API.Controllers
     {
         
         private readonly DevReviewDbContext _DbContext;
+        private readonly IMapper _Mapper;
 
-        public ProductsController(DevReviewDbContext dbContext)
+        public ProductsController(DevReviewDbContext dbContext, IMapper mapper)
         {
           _DbContext = dbContext;   
+          _Mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll() {
             var products = _DbContext.Products;
-
-            var productsViewModel = products.Select(p => new ProductViewModel(p.Id, p.Title, p.Price));
+            var productsViewModel = _Mapper.Map<List<ProductViewModel>>(products);
 
             return Ok(productsViewModel);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id) {
-            var product = _DbContext.Products.SingleOrDefault(p => p.Id == id);
+            var product = _DbContext.Products
+            .Include(p => p.Reviews)
+            .SingleOrDefault(p => p.Id == id);
 
             if (product == null) {
                 return NotFound();
             }
 
-            var reviewViewModel = product
-            .Reviews
-            .Select(p => new ProductReviewViewModel(p.Id, p.Author, p.Rating, p.RegisterAt, p.Commets))
-            .ToList();
-
-            var productDetails = new ProductDetailsViewModel(
-            product.Id,
-            product.Title,
-            product. Description,
-            product. Price,
-            product.RegisterAt
-            );
+            var productDetails = _Mapper.Map<ProductDetailsViewModel>(product);
 
             return Ok(productDetails);
         }
@@ -59,8 +52,10 @@ namespace devReviews.API.Controllers
             var product = new Product(model.Title, model.Description, model.Price);
 
             _DbContext.Products.Add(product);
+            _DbContext.SaveChanges();
 
             return CreatedAtAction (nameof(GetById), new { id = product.Id}, model);
+       
         }
 
         [HttpPut("{id}")]
@@ -76,6 +71,8 @@ namespace devReviews.API.Controllers
             }
 
             product.UpdateReview(model.Description, model.Price);
+            _DbContext.SaveChanges();
+
             return Ok();
         }
 
