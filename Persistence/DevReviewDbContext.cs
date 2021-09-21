@@ -8,17 +8,29 @@ namespace devReviews.API.Persistence
     {
         public DevReviewDbContext(DbContextOptions<DevReviewDbContext> options) : base(options) 
         {
-            Products = new List<Product>();
+          
         }
 
         public DbSet<Product> Products { get; set; }
-        public Dbset<ProductReview> ProductReview { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            modelBuilder.Entity<Product>(p => {
+                p.ToTable("tb_Product");
+                p.HasKey(p => p.Id);
+                p.HasMany(pp => pp.Reviews)
+                    .WithOne()
+                    .HasForeignKey(r => r.ProductId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
+            modelBuilder.Entity<ProductReview>(pr =>  {
+                pr.ToTable("tb_ProductReviews");
+                pr.HasKey(p => p.Id);
+                pr.Property(p => p.Author)
+                    .HasMaxLength(50);
+            });
         }
-
-
     }
 }

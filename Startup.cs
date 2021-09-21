@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using devReviews.API.Persistence;
 using devReviews.API.Profiles;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace devReviews.API
@@ -29,9 +30,8 @@ namespace devReviews.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
-            services.AddSingleton<DevReviewDbContext>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
