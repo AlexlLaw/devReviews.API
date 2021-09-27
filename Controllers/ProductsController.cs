@@ -3,10 +3,10 @@ using devReviews.API.Models;
 using devReviews.API.Models.Views;
 using devReviews.API.Persistence;
 using devReviews.API.Entity;
-using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace devReviews.API.Controllers
 {
@@ -33,10 +33,10 @@ namespace devReviews.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id) {
-            var product = _DbContext.Products
+        public async Task<IActionResult> GetById(int id) {
+            var product = await _DbContext.Products
             .Include(p => p.Reviews)
-            .SingleOrDefault(p => p.Id == id);
+            .SingleOrDefaultAsync(p => p.Id == id);
 
             if (product == null) {
                 return NotFound();
@@ -48,30 +48,29 @@ namespace devReviews.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(AddProductInputModel model) {
+        public async Task<IActionResult> Post(AddProductInputModel model) {
             var product = new Product(model.Title, model.Description, model.Price);
 
-            _DbContext.Products.Add(product);
-            _DbContext.SaveChanges();
+            await _DbContext.Products.AddAsync(product);
+            await _DbContext.SaveChangesAsync();
 
             return CreatedAtAction (nameof(GetById), new { id = product.Id}, model);
-       
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, UpdateProductInputModel model) {
+        public async Task<IActionResult> Put(int id, UpdateProductInputModel model) {
             if (model.Description.Length > 50) {
                 return BadRequest();
             }
 
-            var product = _DbContext.Products.SingleOrDefault(p => p.Id == id);
+            var product = await _DbContext.Products.SingleOrDefaultAsync(p => p.Id == id);
 
             if (product == null) {
                 return NotFound();
             }
 
             product.UpdateReview(model.Description, model.Price);
-            _DbContext.SaveChanges();
+            await _DbContext.SaveChangesAsync();
 
             return Ok();
         }

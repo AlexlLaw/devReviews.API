@@ -3,8 +3,9 @@ using devReviews.API.Models;
 using devReviews.API.Models.Views;
 using AutoMapper;
 using devReviews.API.Persistence;
-using System.Linq;
 using devReviews.API.Entity;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace devReviews.API.Controllers
 {
@@ -22,27 +23,28 @@ namespace devReviews.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int productId, int id)
+        public async Task<IActionResult> GetById(int productId, int id)
         {
-            var productReview = _DbContext.ProductReviews.SingleOrDefault(p => p.Id == id);
+            var productReview = await _DbContext.ProductReviews.SingleOrDefaultAsync(p => p.Id == id);
 
             if (productReview == null) {
                 return NotFound();
             }
-                var productDetails = _Mapper.Map<ProductReviewDetailsViewModel>(productReview);
+
+            var productDetails = _Mapper.Map<ProductReviewDetailsViewModel>(productReview);
 
             return Ok(productDetails);
         }
 
         [HttpPost]
-        public IActionResult Post(int productId, AddProductReviewInputModel model)
+        public async Task<IActionResult> Post(int productId, AddProductReviewInputModel model)
         {
-            var productReview = new ProductReview(model.Author, model.Rating, model.Comments, productId);
+           var productReview = new ProductReview(model.Author, model.Rating, model.Comments, productId);
 
-            _DbContext.ProductReviews.Add(productReview);
-            _DbContext.SaveChanges();
+           await _DbContext.ProductReviews.AddAsync(productReview);
+           await _DbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = 1, productId = 2 }, model);
+           return CreatedAtAction(nameof(GetById), new { id = 1, productId = 2 }, model);
         }
     }
 }
