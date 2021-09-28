@@ -12,4 +12,8 @@
     
     .Padrão Repository com entity Framework Core;
     
-    .AutoMapper, Documentação com APIs com Swagger;
+    .AutoMapper;
+    
+    .Documentação com APIs com Swagger;
+    
+    .Serilogs;
