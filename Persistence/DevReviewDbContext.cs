@@ -23,13 +23,28 @@ namespace devReviews.API.Persistence
                     .WithOne()
                     .HasForeignKey(r => r.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
+                p.Property(p => p.Title)
+                    .HasMaxLength(50)
+                    .IsRequired(true);
+                
+                p.Property(p => p.Description)
+                    .HasMaxLength(255)
+                    .IsRequired(true);
+                 p.Property(p => p.Price)
+                    .IsRequired(true);
             });
 
             modelBuilder.Entity<ProductReview>(pr =>  {
                 pr.ToTable("tb_ProductReviews");
                 pr.HasKey(p => p.Id);
                 pr.Property(p => p.Author)
-                    .HasMaxLength(50);
+                    .HasMaxLength(50)
+                    .IsRequired(true);
+                pr.Property(p => p.Rating)
+                    .HasMaxLength(10);
+                pr.Property(p => p.Commets)
+                    .HasMaxLength(255)
+                    .IsRequired(true);
             });
         }
     }
