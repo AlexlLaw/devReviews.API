@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using devReviews.API.Persistence;
 using devReviews.API.Profiles;
 using Microsoft.EntityFrameworkCore;
-
+using devReviews.API.Persistence.Repositorys;
 
 namespace devReviews.API
 {
@@ -32,6 +32,7 @@ namespace devReviews.API
         {
             services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
