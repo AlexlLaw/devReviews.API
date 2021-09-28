@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using devReviews.API.Models;
 using devReviews.API.Models.Views;
-using devReviews.API.Persistence;
 using devReviews.API.Entity;
 using System.Collections.Generic;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using devReviews.API.Persistence.Repositorys;
 
 namespace devReviews.API.Controllers
 {
@@ -15,18 +14,19 @@ namespace devReviews.API.Controllers
     public class ProductsController : ControllerBase
     {
         
-        private readonly DevReviewDbContext _DbContext;
         private readonly IMapper _Mapper;
+        private readonly IProductRepository _IProductRepository;
 
-        public ProductsController(DevReviewDbContext dbContext, IMapper mapper)
-        {
-          _DbContext = dbContext;   
+        public ProductsController(IProductRepository IProductRepository, IMapper mapper)
+        {  
+          _IProductRepository = IProductRepository;
           _Mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetAll() {
-            var products = _DbContext.Products;
+        public async Task<IActionResult> GetAll() {
+        
+            var products = await _IProductRepository.GetAllAsync();
             var productsViewModel = _Mapper.Map<List<ProductViewModel>>(products);
 
             return Ok(productsViewModel);
@@ -34,9 +34,7 @@ namespace devReviews.API.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
-            var product = await _DbContext.Products
-            .Include(p => p.Reviews)
-            .SingleOrDefaultAsync(p => p.Id == id);
+            var product = await _IProductRepository.GetByIdAsync(id);
 
             if (product == null) {
                 return NotFound();
@@ -51,8 +49,7 @@ namespace devReviews.API.Controllers
         public async Task<IActionResult> Post(AddProductInputModel model) {
             var product = new Product(model.Title, model.Description, model.Price);
 
-            await _DbContext.Products.AddAsync(product);
-            await _DbContext.SaveChangesAsync();
+            await  _IProductRepository.AddAsync(product);
 
             return CreatedAtAction (nameof(GetById), new { id = product.Id}, model);
         }
@@ -63,16 +60,15 @@ namespace devReviews.API.Controllers
                 return BadRequest();
             }
 
-            var product = await _DbContext.Products.SingleOrDefaultAsync(p => p.Id == id);
+            var product = await _IProductRepository.GetByIdAsync(id);
 
             if (product == null) {
                 return NotFound();
             }
-
             product.UpdateReview(model.Description, model.Price);
-            await _DbContext.SaveChangesAsync();
+            await _IProductRepository.UpdateAsync(product);
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
