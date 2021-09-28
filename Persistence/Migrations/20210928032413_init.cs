@@ -13,8 +13,8 @@ namespace devReviews.API.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RegisterAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -29,10 +29,10 @@ namespace devReviews.API.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Author = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Rating = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     RegisterAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Commets = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Commets = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
