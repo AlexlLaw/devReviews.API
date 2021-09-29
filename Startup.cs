@@ -7,8 +7,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using devReviews.API.Persistence;
 using devReviews.API.Profiles;
+using devReviews.API.Models;
 using Microsoft.EntityFrameworkCore;
 using devReviews.API.Persistence.Repositorys;
+using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
 
 namespace devReviews.API
 {
@@ -27,7 +30,12 @@ namespace devReviews.API
             services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddControllers();
+
+            services.AddControllers()
+                .AddFluentValidation(Config => {
+                Config.RegisterValidatorsFromAssemblyContaining<AddProductInputModel>();
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "devReviews.API", Version = "v1" });
