@@ -77,3 +77,6 @@ C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Serilog.Sinks.Debug.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Serilog.Sinks.File.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Serilog.Sinks.MSSqlServer.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Serilog.Sinks.PeriodicBatching.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
