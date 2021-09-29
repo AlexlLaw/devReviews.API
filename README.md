@@ -1,5 +1,5 @@
 # devReviews.API
-  Aplicação responsavel por gerencia aaliações de produtos de um e-commerce. Contém as seguintes funcionalidade: 
+  Aplicação responsavel por gerencia avaliações de produtos de um e-commerce. Contém as seguintes funcionalidade: 
   
     .Cadastro e detalhes de uma avaliação;
     
