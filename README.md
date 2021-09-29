@@ -17,3 +17,5 @@
     .Documentação com APIs com Swagger;
     
     .Serilogs;
+    
+    .FluentValidators
