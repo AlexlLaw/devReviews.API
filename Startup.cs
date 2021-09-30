@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using devReviews.API.Persistence;
+using devReviews.API.Extensions;
 using devReviews.API.Profiles;
 using devReviews.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,16 @@ namespace devReviews.API
         {
             services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
-            services.AddScoped<IProductRepository, ProductRepository>();
+            // services.AddScoped<IProductRepository, ProductRepository>();
+
+            services
+            .AddRepositorys()
+            .AddServices();
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddControllers()
                 .AddFluentValidation(Config => {
