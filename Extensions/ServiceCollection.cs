@@ -23,6 +23,7 @@ namespace devReviews.API.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductReviewService, ProductReviewService>();
 
             return services;
         }
