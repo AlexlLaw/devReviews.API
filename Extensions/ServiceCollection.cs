@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using devReviews.API.Services;
 using devReviews.API.Persistence.Repositorys;
+using Microsoft.AspNetCore.Mvc;
+using FluentValidation.AspNetCore;
+using devReviews.API.Models;
 
 namespace devReviews.API.Extensions
 {
@@ -23,5 +26,16 @@ namespace devReviews.API.Extensions
 
             return services;
         }
+
+       public static IServiceCollection AddValidator(this IServiceCollection services)
+       {
+           services.AddControllers()
+                .AddFluentValidation(Config => {
+                Config.RegisterValidatorsFromAssemblyContaining<AddProductInputModel>();
+                Config.RegisterValidatorsFromAssemblyContaining<UpdateProductInputModel>();
+                });
+
+            return services;
+       }
     }
 }

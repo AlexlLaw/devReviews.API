@@ -11,8 +11,6 @@ using devReviews.API.Profiles;
 using devReviews.API.Models;
 using Microsoft.EntityFrameworkCore;
 using devReviews.API.Persistence.Repositorys;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation.AspNetCore;
 
 namespace devReviews.API
 {
@@ -30,21 +28,16 @@ namespace devReviews.API
         {
             services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
-            // services.AddScoped<IProductRepository, ProductRepository>();
 
             services
             .AddRepositorys()
-            .AddServices();
+            .AddServices()
+            .AddValidator();
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-
-            services.AddControllers()
-                .AddFluentValidation(Config => {
-                Config.RegisterValidatorsFromAssemblyContaining<AddProductInputModel>();
-                });
 
             services.AddSwaggerGen(c =>
             {
