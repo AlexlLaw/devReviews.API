@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using System.Threading.Tasks;
 using devReviews.API.Persistence.Repositorys;
+using devReviews.API.Services;
 
 namespace devReviews.API.Controllers
 {
@@ -13,61 +14,49 @@ namespace devReviews.API.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        
         private readonly IMapper _Mapper;
         private readonly IProductRepository _IProductRepository;
+        private readonly IProductService _IProductService;
 
-        public ProductsController(IProductRepository IProductRepository, IMapper mapper)
-        {  
+        public ProductsController(IProductRepository IProductRepository, IProductService IProductService, IMapper mapper) {  
           _IProductRepository = IProductRepository;
+          _IProductService = IProductService;
           _Mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll() {
-        
-            var products = await _IProductRepository.GetAllAsync();
-            var productsViewModel = _Mapper.Map<List<ProductViewModel>>(products);
-
-            return Ok(productsViewModel);
+            var products = await _IProductService.GetAllAsync();
+            
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id) {
-            var product = await _IProductRepository.GetByIdAsync(id);
+            var product = await _IProductService.GetByIdAsync(id);
 
             if (product == null) {
-                return NotFound();
+                return NotFound("Produto não encontrado");
             }
 
-            var productDetails = _Mapper.Map<ProductDetailsViewModel>(product);
-
-            return Ok(productDetails);
+            return Ok(product);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(AddProductInputModel model) {
-            var product = new Product(model.Title, model.Description, model.Price);
-
-            await  _IProductRepository.AddAsync(product);
+            var product = await _IProductService.AddAsync(model);
 
             return CreatedAtAction (nameof(GetById), new { id = product.Id}, model);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateProductInputModel model) {
-            if (model.Description.Length > 50) {
-                return BadRequest();
+            var product = await  _IProductService.UpdateAsync(id, model);
+
+            if (!product) {
+                return NotFound("Produto não encontrado");
             }
-
-            var product = await _IProductRepository.GetByIdAsync(id);
-
-            if (product == null) {
-                return NotFound();
-            }
-            product.UpdateReview(model.Description, model.Price);
-            await _IProductRepository.UpdateAsync(product);
-
+           
             return NoContent();
         }
 

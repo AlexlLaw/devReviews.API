@@ -80,3 +80,6 @@ C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Serilog.Sinks.PeriodicBa
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
