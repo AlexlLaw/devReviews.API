@@ -14,14 +14,10 @@ namespace devReviews.API.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly IMapper _Mapper;
-        private readonly IProductRepository _IProductRepository;
         private readonly IProductService _IProductService;
 
-        public ProductsController(IProductRepository IProductRepository, IProductService IProductService, IMapper mapper) {  
-          _IProductRepository = IProductRepository;
+        public ProductsController(IProductService IProductService) {  
           _IProductService = IProductService;
-          _Mapper = mapper;
         }
 
         [HttpGet]
