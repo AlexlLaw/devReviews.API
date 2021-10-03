@@ -22,6 +22,7 @@ namespace devReviews.API.Extensions
         public static IServiceCollection AddRepositorys(this IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

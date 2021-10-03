@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using devReviews.API.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace devReviews.API.Persistence.Repositorys
 {
-    public static class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public static User Get(string userName, string password)
-        {
-            var users = new List<User>();
-            users.Add(new User { Id = 1, Username = "batman", Password = "batman", Role = "manager" });
-            users.Add(new User { Id = 2, Username = "robin", Password = "robin", Role = "employee" });
+        private readonly DevReviewDbContext _DbContext;
 
-            return users.Where(x => x.Username.ToLower() == userName.ToLower() && x.Password == x.Password).FirstOrDefault();
+        public UserRepository(DevReviewDbContext dbContext)
+        {
+          _DbContext = dbContext;   
+        }
+
+        public async Task<User> Get(string userName, string password)
+        {
+            return await _DbContext.Users.SingleOrDefaultAsync(x => x.Username.ToLower() == userName.ToLower() && x.Password == x.Password);
         }
     }
 }

@@ -15,13 +15,19 @@ namespace devReviews.API.Controllers
     [Route("api/[controller]")]
     public class HomeController : ControllerBase
     {
-                
+        private readonly IUserRepository _userRepository;
+
+        public HomeController(IUserRepository IUserRepository)
+        {
+            _userRepository = IUserRepository;
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult<dynamic>> Authenticate(User model)
         {
             // Recupera o usuário
-            var user = UserRepository.Get(model.Username, model.Password);
+            var user = await _userRepository.Get(model.Username, model.Password);
 
             // Verifica se o usuário existe
             if (user == null)
