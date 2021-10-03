@@ -4,10 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using devReviews.API.Services;
+using Microsoft.AspNetCore.Hosting;
 using devReviews.API.Persistence.Repositorys;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation.AspNetCore;
 using devReviews.API.Models;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace devReviews.API.Extensions
 {
@@ -38,5 +44,15 @@ namespace devReviews.API.Extensions
 
             return services;
        }
+        
+        public static IServiceCollection AddSwagger(this IServiceCollection services) 
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "devReviews.API", Version = "v1" });
+            });
+
+            return services;
+        }  
     }
 }

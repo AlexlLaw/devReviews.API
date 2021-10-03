@@ -8,9 +8,13 @@ using Microsoft.OpenApi.Models;
 using devReviews.API.Persistence;
 using devReviews.API.Extensions;
 using devReviews.API.Profiles;
-using devReviews.API.Models;
 using Microsoft.EntityFrameworkCore;
 using devReviews.API.Persistence.Repositorys;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace devReviews.API
 {
@@ -28,10 +32,13 @@ namespace devReviews.API
         {
             services.AddDbContext<DevReviewDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddAutoMapper(typeof(ProductProfiles));
+            services.AddCors(); 
+            services.AddControllers();
 
             services
             .AddRepositorys()
             .AddServices()
+            .AddSwagger()
             .AddValidator();
 
             services.AddControllersWithViews()
@@ -39,10 +46,25 @@ namespace devReviews.API
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddSwaggerGen(c =>
+            var key = Encoding.ASCII.GetBytes(Settings.Secret);
+
+            services.AddAuthentication(x =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "devReviews.API", Version = "v1" });
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +81,12 @@ namespace devReviews.API
 
             app.UseRouting();
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
