@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace devReviews.API.Persistence.Migrations
 {
-    public partial class init : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,21 @@ namespace devReviews.API.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tb_Product", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +61,16 @@ namespace devReviews.API.Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Password", "Role", "Username" },
+                values: new object[] { 1, "admin", "manager", "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Password", "Role", "Username" },
+                values: new object[] { 2, "teste", "employee", "teste" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_tb_ProductReviews_ProductId",
                 table: "tb_ProductReviews",
@@ -56,6 +81,9 @@ namespace devReviews.API.Persistence.Migrations
         {
             migrationBuilder.DropTable(
                 name: "tb_ProductReviews");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "tb_Product");

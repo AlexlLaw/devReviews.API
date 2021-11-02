@@ -13,6 +13,7 @@ namespace devReviews.API.Persistence
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
@@ -46,6 +47,23 @@ namespace devReviews.API.Persistence
                     .HasMaxLength(255)
                     .IsRequired(true);
             });
+
+            modelBuilder.Entity<User>()
+                .HasData( 
+                    new List<User>() {
+                       new User() {
+                           Id = 1,
+                           Username = "Admin",
+                           Password = "admin",
+                           Role = "manager"
+                       },
+                        new User() {
+                           Id = 2,
+                           Username = "teste",
+                           Password = "teste",
+                           Role = "employee"
+                       },
+                });    
         }
     }
 }
