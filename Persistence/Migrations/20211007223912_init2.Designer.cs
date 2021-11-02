@@ -10,8 +10,8 @@ using devReviews.API.Persistence;
 namespace devReviews.API.Persistence.Migrations
 {
     [DbContext(typeof(DevReviewDbContext))]
-    [Migration("20210928032413_init")]
-    partial class init
+    [Migration("20211007223912_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,43 @@ namespace devReviews.API.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("tb_ProductReviews");
+                });
+
+            modelBuilder.Entity("devReviews.API.Entity.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "admin",
+                            Role = "manager",
+                            Username = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Password = "teste",
+                            Role = "employee",
+                            Username = "teste"
+                        });
                 });
 
             modelBuilder.Entity("devReviews.API.Entity.ProductReview", b =>

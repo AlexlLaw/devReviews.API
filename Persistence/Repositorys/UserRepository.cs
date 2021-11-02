@@ -18,7 +18,7 @@ namespace devReviews.API.Persistence.Repositorys
 
         public async Task<User> Get(string userName, string password)
         {
-            return await _DbContext.Users.SingleOrDefaultAsync(x => x.Username.ToLower() == userName.ToLower() && x.Password == x.Password);
+            return await _DbContext.Users.SingleOrDefaultAsync(x => x.Username.ToLower() == userName.ToLower() && x.Password == password);
         }
     }
 }

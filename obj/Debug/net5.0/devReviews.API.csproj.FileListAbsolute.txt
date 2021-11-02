@@ -83,3 +83,4 @@ C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\FluentValidation.Depende
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\junio\Music\c#\devReviews.API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
